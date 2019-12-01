@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="circles.css">
+
+    <script type = "text/javascript" src="paper-full.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.js"></script>
+    <script type="text/paperscript" canvas="myCanvas">
+    // Create a Paper.js Path to draw a line into it:
+        // var path = new Path();
+        // // Give the stroke a color
+        // path.strokeColor = 'red';
+        // var start = new Point(100, 100);
+        // // Move to start and draw a line from there
+        // path.moveTo(start);
+        // // Note the plus operator on Point objects.
+        // // PaperScript does that for us, and much more!
+        // path.lineTo(start + [ 200, -50 ]);
+
+        // // Draws a circle
+        // var myCircle = new Path.Circle(new Point(200, 70), 20);
+        // myCircle.fillColor = 'blue';
+
+        // ADDS A GRID OF CIRCLES
+        // for (var x = 1; x < 1000; x+=100)
+        // {
+        //     for (var y = 1; y < 1000; y+=100)
+        //     {
+        //         new Path.Circle(new Point(x, y), 10).fillColor = "yellow";
+        //     }
+        // }
+
+        // HOWL FUNCTION
+        // var sound1 = new Howl({
+      		// 	src: ['sounds/bubbles.mp3']
+    				// });
+        // circles = [];
+
+        // var sound2 = new Howl({
+      		// 	src: ['sounds/clay.mp3']
+    				// });
+        circles = [];
+
+// THIS SHOULD BE IN A SEPERATE FILE AS A MODULE
+        var keyData = {
+	q: {
+		sound: new Howl({
+  		src: ['sounds/bubbles.mp3']
+		}),
+		color: '#1abc9c'
+	},
+	w: {
+		sound: new Howl({
+  		src: ['sounds/clay.mp3']
+		}),
+		color: '#2ecc71'
+	},
+	e: {
+		sound: new Howl({
+  		src: ['sounds/confetti.mp3']
+		}),
+		color: '#3498db'
+	},
+	r: {
+		sound: new Howl({
+  		src: ['sounds/corona.mp3']
+		}),
+		color: '#9b59b6'
+	},
+		t: {
+		sound: new Howl({
+  		src: ['sounds/dotted-spiral.mp3']
+		}),
+		color: '#34495e'
+	},
+	y: {
+		sound: new Howl({
+  		src: ['sounds/flash-1.mp3']
+		}),
+		color: '#16a085'
+	},
+	u: {
+		sound: new Howl({
+  		src: ['sounds/flash-2.mp3']
+		}),
+		color: '#27ae60'
+	},
+	i: {
+		sound: new Howl({
+  		src: ['sounds/flash-3.mp3']
+		}),
+		color: '#2980b9'
+	},
+	o: {
+		sound: new Howl({
+			src: ['sounds/glimmer.mp3']
+		}),
+		color: '#8e44ad'
+	},
+	p: {
+		sound: new Howl({
+  		src: ['sounds/moon.mp3']
+		}),
+		color: '#2c3e50'
+	},
+	a: {
+		sound: new Howl({
+  		src: ['sounds/pinwheel.mp3']
+		}),
+		color: '#f1c40f'
+	},
+	s: {
+		sound: new Howl({
+  		src: ['sounds/piston-1.mp3']
+		}),
+		color: '#e67e22'
+	},
+		d: {
+		sound: new Howl({
+  		src: ['sounds/piston-2.mp3']
+		}),
+		color: '#e74c3c'
+	},
+	f: {
+		sound: new Howl({
+  		src: ['sounds/prism-1.mp3']
+		}),
+		color: '#95a5a6'
+	},
+	g: {
+		sound: new Howl({
+  		src: ['sounds/prism-2.mp3']
+		}),
+		color: '#f39c12'
+	},
+	h: {
+		sound: new Howl({
+  		src: ['sounds/prism-3.mp3']
+		}),
+		color: '#d35400'
+	},
+	j: {
+		sound: new Howl({
+  		src: ['sounds/splits.mp3']
+		}),
+		color: '#1abc9c'
+	},
+	k: {
+		sound: new Howl({
+  		src: ['sounds/squiggle.mp3']
+		}),
+		color: '#2ecc71'
+	},
+	l: {
+		sound: new Howl({
+  		src: ['sounds/strike.mp3']
+		}),
+		color: '#3498db'
+	},
+	z: {
+		sound: new Howl({
+  		src: ['sounds/suspension.mp3']
+		}),
+		color: '#9b59b6'
+	},
+	x: {
+		sound: new Howl({
+  		src: ['sounds/timer.mp3']
+		}),
+		color: '#34495e'
+	},
+	c: {
+		sound: new Howl({
+  		src: ['sounds/ufo.mp3']
+		}),
+		color: '#16a085'
+	},
+	v: {
+		sound: new Howl({
+  		src: ['sounds/veil.mp3']
+		}),
+		color: '#27ae60'
+	},
+	b: {
+		sound: new Howl({
+  		src: ['sounds/wipe.mp3']
+		}),
+		color: '#2980b9'
+	},
+	n: {
+		sound: new Howl({
+			src: ['sounds/zig-zag.mp3']
+		}),
+		color: '#8e44ad'
+	},
+	m: {
+		sound: new Howl({
+  		src: ['sounds/moon.mp3']
+		}),
+		color: '#2c3e50'
+		},
+
+	8: {
+		
+		sound: new Howl({
+  		src: ['sounds/(15) Arabesque No. 1.mp3']
+		}),
+		color: '#2c3e50'
+	}
+}
+
+        function onKeyDown(event) {
+
+        	if (keyData[event.key]) {
+        	
+        	//SIZE OF THE SCREEN
+            var maxPoint = new Point(view.size.width, view.size.height);
+            // creates a random number to use for coordinates
+            var randomPoint = Point.random();
+            var point = maxPoint * randomPoint;
+            // When a key is pressed, create a new circle:
+            var newCircle = new Path.Circle(point, 500);
+            // TODO: begin with a random color
+            newCircle.fillColor =  randomColor();
+ 			keyData[event.key].sound.play();           
+            // ADD THE CIRCLE TO THE CIRCLES ARRAY
+   //          if (event.key === 'a') 
+   //      	{
+			// // PLAY THE sound1
+   //      	sound1.play();
+   //      	newCircle.fillColor = 'blue';
+   //      	}
+   //      	else {
+   //      	sound2.play()
+   //      	newCircle.fillColor = 'greeen';
+   //      	}
+            circles.push(newCircle);
+
+            //randomize the location and sie of the circle
+
+        	}
+        }
+        // FIRST CIRCLE WHEN THE PAGE IS LOADED
+        var animatedCircle = new Path.Circle(new Point (300, 300), 100);
+        animatedCircle.fillColor = "red";
+
+        // Animation: CHANGES HUE AND THE SCALE OF THE CIRCLES
+        function onFrame(event) {
+        	for (var i =0; i < circles.length; i++)
+			// FOR EACH CIRCLE IN THE CIRCLES ARRAY
+        	{
+        		circles[i].fillColor.hue += 1;
+        		circles[i].scale(0.9);
+				animatedCircle.fillColor.hue +=1;
+        		animatedCircle.scale(0.9);
+        		
+        	}
+        		
+        }
+
+        
+
+function randomColor() {
+    // pick a red from 0 - 255
+    // save to a variable
+    var r =  Math.floor(Math.random() * 256)
+    // pick a blue from 0 - 255
+    // save to a variable
+    var b =  Math.floor(Math.random() * 256)
+    // pick a green from 0 - 255
+    // save to a variable
+    var g =  Math.floor(Math.random() * 256)
+    // formatted as rgb(0,0,0) etc
+    return "rgb(" + r + ", "+ g + ", "+ b + ")"
+}
+
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pratatap</title>
+</head>
+<body>
+    	<canvas id="myCanvas" resize></canvas>
+</body>
+</html>
